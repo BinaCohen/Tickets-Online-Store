@@ -1,5 +1,5 @@
 ﻿prompt PL/SQL Developer Export Tables for user SYS@XE
-prompt Created by Moshe Cohen on יום שלישי 28 מאי 2024
+prompt Created by Bina Cohen on יום שלישי 28 מאי 2024
 set feedback off
 set define off
 
