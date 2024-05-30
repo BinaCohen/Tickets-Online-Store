@@ -6,7 +6,7 @@ set define off
 prompt Creating AREAS...
 create table AREAS
 (
-  area_id   NUMBER generated always as identity,
+  area_id   NUMBER,
   area_name VARCHAR2(50)
 )
 ;
@@ -16,7 +16,7 @@ alter table AREAS
 prompt Creating LOCATIONS...
 create table LOCATIONS
 (
-  location_id   NUMBER generated always as identity,
+  location_id   NUMBER,
   location_name VARCHAR2(40) not null,
   area_id       INTEGER not null
 )
@@ -30,7 +30,7 @@ alter table LOCATIONS
 prompt Creating ATTRACTIONS...
 create table ATTRACTIONS
 (
-  attraction_id   NUMBER generated always as identity,
+  attraction_id   NUMBER,
   attraction_name VARCHAR2(40) not null,
   description     VARCHAR2(100) not null,
   opening_hours   VARCHAR2(40) not null,
@@ -46,7 +46,7 @@ alter table ATTRACTIONS
 prompt Creating CATEGORIES...
 create table CATEGORIES
 (
-  category_id   NUMBER generated always as identity,
+  category_id   NUMBER,
   category_name VARCHAR2(40) not null,
   min_age       INTEGER not null
 )
@@ -57,7 +57,7 @@ alter table CATEGORIES
 prompt Creating CUSTOMERS...
 create table CUSTOMERS
 (
-  customer_id    NUMBER generated always as identity,
+  customer_id    NUMBER,
   customer_name  VARCHAR2(40) not null,
   phone_numer    NUMBER(10) not null,
   address_line_1 VARCHAR2(40) not null,
@@ -70,7 +70,7 @@ alter table CUSTOMERS
 prompt Creating ORDERS...
 create table ORDERS
 (
-  order_id    NUMBER generated always as identity,
+  order_id    NUMBER,
   order_date  DATE not null,
   customer_id INTEGER not null
 )
@@ -84,7 +84,7 @@ alter table ORDERS
 prompt Creating TICKETS...
 create table TICKETS
 (
-  ticket_id     NUMBER generated always as identity,
+  ticket_id     NUMBER,
   price         FLOAT not null,
   valid_from    DATE not null,
   valid_until   DATE not null,
