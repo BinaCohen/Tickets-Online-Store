@@ -1,3 +1,5 @@
+
+
 -- Add constraint to Customers table for enshuring phone_number is unique
 ALTER TABLE Customers
 ADD CONSTRAINT unique_phone_number UNIQUE (phone_number);
