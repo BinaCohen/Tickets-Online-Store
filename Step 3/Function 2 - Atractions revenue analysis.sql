@@ -1,19 +1,18 @@
-
--- Create a pipelined function to analyze revenue by area
+-- Create a function to analyze revenue by area and return a REF CURSOR
 CREATE OR REPLACE FUNCTION analyze_revenue_by_area (
     p_area_name IN VARCHAR2 DEFAULT NULL
 )
-RETURN RevenueTableType PIPELINED
+RETURN SYS_REFCURSOR
 IS
-    -- Declare local variables
-    v_revenue_record RevenueRecordType;
+    -- Declare a REF CURSOR variable
+    v_ref_cursor SYS_REFCURSOR;
+
 BEGIN
-    -- Query to fetch revenue data based on area id and categorize it
-    FOR rec IN (
-      
+    -- Open the REF CURSOR for the query results
+    OPEN v_ref_cursor FOR
         SELECT
             A.ATTRACTION_NAME,
-            SUM(T.PRICE),
+            SUM(T.PRICE) AS TOTAL_REVENUE,
             (CASE WHEN SUM(T.PRICE) > 1000 THEN SUM(T.PRICE) ELSE 0 END) AS REVENUE_OVER_1000,
             (CASE WHEN SUM(T.PRICE) > 500 AND SUM(T.PRICE) <= 1000 THEN SUM(T.PRICE) ELSE 0 END) AS REVENUE_OVER_500,
             (CASE WHEN SUM(T.PRICE) > 100 AND SUM(T.PRICE) <= 500 THEN SUM(T.PRICE) ELSE 0 END) AS REVENUE_OVER_100,
@@ -24,24 +23,11 @@ BEGIN
         INNER JOIN LOCATIONS L ON A.LOCATION_ID = L.LOCATION_ID
         INNER JOIN AREAS AR ON AR.Area_Id = L.AREA_ID
         WHERE (p_area_name IS NULL OR AR.AREA_NAME = p_area_name)
-        GROUP BY A.ATTRACTION_NAME
-        
-    ) LOOP
-        -- Populate the record type with fetched data
-        v_revenue_record := RevenueRecordType(
-            rec.ATTRACTION_NAME,
-            rec.REVENUE_OVER_1000,
-            rec.REVENUE_OVER_500,
-            rec.REVENUE_OVER_100,
-            rec.LOW_REVENUE
-        );
+        GROUP BY A.ATTRACTION_NAME;
 
-        -- Pipe the record type to the result set
-        PIPE ROW(v_revenue_record);
-    END LOOP;
+    -- Return the opened REF CURSOR
+    RETURN v_ref_cursor;
 
-    -- Return the pipelined result set
-    RETURN;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         NULL; -- Return NULL when no data found

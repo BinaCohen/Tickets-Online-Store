@@ -21,13 +21,6 @@ IS
   -- Variable to hold the order ID fetched from the cursor
   v_order_id Orders.order_id%TYPE;
 
-  -- Cursor to fetch the total value of tickets for a specific order
-  CURSOR tickets_cursor IS
-    SELECT SUM(t.price) AS total_order_value
-    FROM Order_Items oi
-    JOIN Tickets t ON oi.ticket_id = t.ticket_id
-    WHERE oi.order_id = v_order_id;
-
   -- Variable to hold the total value of tickets for the current order
   v_order_value NUMBER;
 BEGIN
@@ -37,17 +30,16 @@ BEGIN
     -- Fetch each order ID from the cursor
     FETCH orders_cursor INTO v_order_id;
     EXIT WHEN orders_cursor%NOTFOUND; -- Exit loop when no more rows are found
-
-    -- Initialize the order value for the current order
-    v_order_value := 0;
-
-    -- Open the tickets cursor for the current order
-    OPEN tickets_cursor;
-    FETCH tickets_cursor INTO v_order_value;
-    CLOSE tickets_cursor;
+    
+      -- Cursor to fetch the total value of tickets for a specific order
+    SELECT SUM(t.price) INTO v_order_value
+    FROM Order_Items oi
+    JOIN Tickets t ON oi.ticket_id = t.ticket_id
+    WHERE oi.order_id = v_order_id;
 
     -- Add the current order value to the total value
     v_total_value := v_total_value + v_order_value;
+
     -- Increment the total number of orders
     v_total_orders := v_total_orders + 1;
   END LOOP;
