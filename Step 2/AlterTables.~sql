@@ -14,6 +14,3 @@ select * from customers
 
 ALTER TABLE Customers
 RENAME COLUMN phone_numer TO old_phone_numer;
-
-ALTER TABLE Tickets
-MODIFY valid_from DEFAULT SYSDATE;
