@@ -19,7 +19,7 @@ DECLARE
 BEGIN
   
   -- Call function to calculate total revenue
-  calculate_total_revenue(v_attraction_name, v_area_name, v_total_revenue);
+  calculate_total_revenue(v_attraction_name, '&area_name', v_total_revenue);
   DBMS_OUTPUT.PUT_LINE('Total Revenue for ' || v_attraction_name || ': ' || v_total_revenue);
   DBMS_OUTPUT.PUT_LINE('');
   

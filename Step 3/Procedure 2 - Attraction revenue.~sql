@@ -1,18 +1,14 @@
 CREATE OR REPLACE PROCEDURE calculate_total_revenue (
-    p_attraction_name IN VARCHAR2,
-    p_area_name IN VARCHAR2,
+    p_attraction_id IN NUMBER,
     p_total_revenue OUT NUMBER
 )
 IS
   v_total_revenue NUMBER := 0;
   CURSOR revenue_cursor IS
     SELECT price
-    FROM ATTRACTIONS A
-    INNER JOIN TICKETS T ON A.ATTRACTION_ID = T.ATTRACTION_ID
+    FROM Tickets t
     INNER JOIN Order_Items oi ON oi.ticket_id = t.ticket_id
-    INNER JOIN LOCATIONS L ON A.LOCATION_ID = L.LOCATION_ID
-    INNER JOIN AREAS AR ON AR.Area_Id = L.AREA_ID
-    WHERE attraction_name = p_attraction_name AND (p_area_name IS NULL OR AR.AREA_NAME = p_area_name);
+    WHERE attraction_id = p_attraction_id;
   v_price NUMBER;
 BEGIN
   OPEN revenue_cursor;
@@ -32,6 +28,3 @@ EXCEPTION
     RAISE;
 END calculate_total_revenue;
 /
-
-ALTER PROCEDURE analyze_revenue COMPILE;
- SELECT * FROM USER_ERRORS WHERE NAME = 'CALCULATE_TOTAL_REVENUE';
