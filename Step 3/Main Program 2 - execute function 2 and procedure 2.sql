@@ -8,8 +8,8 @@ DECLARE
     LOW_REVENUE NUMBER
   );
 
-  v_attraction_name VARCHAR2(100) := '&attraction_name'; -- Example attraction_name
-  v_area_name VARCHAR2(100) := '&area_name';
+  v_attraction_name VARCHAR2(100) := &<name = "Attraction name" type = "string" list = "select attraction_name from attractions" hint = "Enter attraction name">; 
+  v_area_name VARCHAR2(100) := &<name = "Area name" type = "string" list = "select area_id, area_name from areas" description = "yes" hint = "Enter area name">;
   v_total_revenue NUMBER;
   rev_over_1000_count NUMBER := 0;
   v_cursor sys_refcursor;

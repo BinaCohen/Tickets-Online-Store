@@ -16,8 +16,8 @@ JOIN Attractions A ON T.ATTRACTION_ID = A.Attraction_id
 JOIN Locations L ON A.location_id = L.location_id
 JOIN Categories C ON T.category_id = C.category_id
 JOIN Areas AR ON L.area_id = AR.area_id
-WHERE AR.area_name = &<name = "Area name" type = "string" hint = "Enter area name"> 
-AND C.Category_name = &<name = "Category name" type = "string" list = "Adult, Teenager, Child" hint = "Select category">
+WHERE AR.area_id = &<name = "Area name" type = "string" list = "select area_id, area_name from areas" description = "yes" hint = "Enter area name"> 
+AND C.Category_name = &<name = "Category name" type = "string" list = "select category_id, category_name from categories" description = "yes" hint = "Select category">
 
 /*
 Parameter: area_name - The name of the area where attractions are located.
