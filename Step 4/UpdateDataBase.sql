@@ -10,9 +10,8 @@ WHERE EXISTS (
     WHERE b.BranchAddress LIKE '%' || l.location_name || '%'
 );
 
-INSERT INTO Customers (customer_name, old_phone_numer, address_line_1, address_line_2, phone_number)
-SELECT ClientName || ' ' || ClientLastName AS customer_name,
-       '0000000000' AS phone_numer,
+INSERT INTO Customers (customer_id, customer_name, address_line_1, address_line_2, phone_number)
+SELECT clientId + 400, ClientName || ' ' || ClientLastName AS customer_name,
        ClientAddress AS address_line_1,
        NULL AS address_line_2,
        NULL AS phone_number
@@ -21,30 +20,29 @@ FROM Client;
 
 
 UPDATE activity a
-SET customer_id = (
-    SELECT c.customer_id
-    FROM Customers c
-    WHERE c.customer_id = a.ClientId
-)
-WHERE EXISTS (
-    SELECT 1
-    FROM Customers c
-    WHERE c.customer_id = a.ClientId
-);
+SET customer_id = clientId + 400
 
 
+select * from orders
+
+update orders 
+set accountid = 124
+
+SELECT * FROM Acount A
+LEFT JOIN ACTIVITY AC ON A.ACCOUNTID = AC.ACCOUNTID
+WHERE AC.ACCOUNTID IS NULL
+    AND ROWNUM = 1
 
 
 UPDATE Orders o
-SET AccountId =  (
+SET AccountId = (
     SELECT (a.AccountId
     FROM activity a
-    WHERE o.customer_id = a.ClientId
+    WHERE o.customer_id = a.customer_id
     AND ROWNUM = 1
 )
 WHERE EXISTS (
     SELECT 1
     FROM activity a
-    WHERE o.customer_id = a.ClientId
+    WHERE o.customer_id = a.customer_id
 );
-
